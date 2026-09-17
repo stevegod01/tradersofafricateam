@@ -1,0 +1,36 @@
+# Dependencies and generated output
+node_modules/
+.next/
+dist/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.local.bicepparam
+main.generated.json
+.azure/
+.azure-cli-portable/
+.vercel/
+
+# Local tooling, caches, archives, and logs
+.npm-cache/
+npm-cache/
+.venv/
+.codex-security-work/
+tmp/
+*.log
+*.tar.gz
+*.zip
+.DS_Store
+Thumbs.db

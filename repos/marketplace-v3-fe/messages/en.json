@@ -1,0 +1,959 @@
+{
+  "HomePage": {
+    "moreCollection": "More Collections",
+    "popularProducts": "Popular Products",
+    "newlyAddedProducts": "Newly Added Products",
+    "ourApp": "Our App",
+    "subscribeNews": "Subscribe to our newsletter",
+    "subscribeDesc": " A monthly digest of the latest news, articles, and resources.",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "allRightsReserved": "All Rights Reserved",
+    "slides": {
+      "previous": "Previous promotion",
+      "next": "Next promotion",
+      "1": {
+        "badge": "Hot Deals",
+        "title": "Summer Sale — Up to 60% Off",
+        "subtitle": "Shop the biggest deals this season"
+      },
+      "2": {
+        "badge": "Just In",
+        "title": "New Arrivals in Electronics",
+        "subtitle": "Flagship phones & laptops now in stock"
+      },
+      "3": {
+        "badge": "Trending",
+        "title": "Fashion Week Collection",
+        "subtitle": "Curated looks from top designers"
+      },
+      "4": {
+        "badge": "Home",
+        "title": "Transform Your Home",
+        "subtitle": "Furniture & decor at unbeatable prices"
+      },
+      "a1": {
+        "title": "Flash Sale — 2hrs Left",
+        "subtitle": "Up to 40% off tech"
+      },
+      "a2": {
+        "title": "Gift Sets Available",
+        "subtitle": "Perfect for any occasion"
+      },
+      "a3": {
+        "title": "Free Delivery Today",
+        "subtitle": "On orders over $50"
+      },
+      "b1": {
+        "title": "Buy Now, Pay Later",
+        "subtitle": "0% interest for 6 months"
+      },
+      "b2": {
+        "title": "Top Rated Sellers",
+        "subtitle": "Quality you can trust"
+      },
+      "b3": {
+        "title": "Ships Worldwide",
+        "subtitle": "Fast & reliable delivery"
+      }
+    }
+  },
+  "aboutUs": {
+    "ourStory": "Our Story",
+    "theStory": " It all started because of groundnuts! Remember, there used to be groundnut pyramids in Kano and other cities in Northern Nigeria. Tens of thousands of groundnut sacks stacked up in pyramid-like structures. Now, imagine not being able to find groundnuts today  in large quantities anywhere in Nigeria and Africa as a whole. That’s exactly how Uju felt right before she started TOFA.",
+    "ourMission": "Our Mission",
+    "theMission": "The big mission for Traders of Africa is to facilitate trade across the 54 countries in Africa, through strategic partnerships.",
+    "ourVision": "Our vision",
+    "theVision": "To be a point of convergence for qualitative trade with Africa and creating access to market for 2,000,000 African traders by 2025.",
+    "ujuQuote": " There is an urgent need to expose to Africans what is obtainable in our  locality and from our surroundings, as well as showcase African products to the rest of the world. - Uju Uzo-Ojinnaka",
+    "ourTeam": "Our Team Awesome",
+    "teamDesc": "Traders of Africa promotes a relaxed, culturally diverse workplace for the optimal performance of its employees, as well as an all-round friendly experience for anyone who walks through our doors. We are called Team Awesome!",
+    "teamQuote": "A team of young, dynamic innovators sowing the seeds of qualitative trade out of Africa.",
+    "watchGroundnutStory": "Watch the Groundnut Story",
+    "roles": {
+      "ceoFounder": "CEO & Founder",
+      "techLead": "Tech Lead",
+      "legalOfficer": "Legal Officer",
+      "backendDeveloper": "Backend Developer",
+      "graphicsContentManager": "Graphics & Content Manager",
+      "hrAdmin": "HR/Admin",
+      "strategicPartnerships": "Strategic Partnerships"
+    }
+  },
+  "becomeSeller": {
+    "register": "Register Now",
+    "hero": {
+      "accent": "Connect And Trade",
+      "title": "With Suppliers Of Food And Agriculture",
+      "description": "Take your business to the next level by becoming a seller on the supplier's marketplace.",
+      "badge": "For African Suppliers",
+      "secondaryCta": "See How It Works",
+      "stats": {
+        "sellers": {
+          "value": "5,000+",
+          "label": "Active sellers"
+        },
+        "countries": {
+          "value": "40+",
+          "label": "Countries reached"
+        },
+        "payout": {
+          "value": "48hrs",
+          "label": "Average payout time"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Why Sell On The Marketplace?",
+      "subtitle": "Learn the benefits. Here's why you need to know to start selling.",
+      "items": {
+        "listStore": {
+          "title": "List Your Store",
+          "description": "The store is your product and profile listing hub. Learn more about our strong seller tools."
+        },
+        "fastSales": {
+          "title": "Get Faster Resolutions",
+          "description": "Increase your sales with effective management. You create and upload your store and orders."
+        },
+        "connectBuyers": {
+          "title": "Connect With More Buyers",
+          "description": "Reach buyers across Africa through our marketplace and build lasting trade relationships."
+        },
+        "payments": {
+          "title": "Seamless And Lasting",
+          "description": "Buyers pay securely on the platform while you manage fulfillment and receive dependable support."
+        }
+      }
+    },
+    "onboarding": {
+      "title": "Want To Become A Supplier?",
+      "steps": {
+        "one": "Step 1: Register in under 5 minutes. Fill in the registration form and submit the required documents.",
+        "two": "Step 2: Become an Agro-entrepreneur expert. Complete the dedicated core seller onboarding video.",
+        "three": "Step 3: List your products and upload product images to start selling by exposing your product to a wide African client base on the marketplace.",
+        "four": "Step 4: Receive and fulfill orders from buyers."
+      },
+      "stepLabel": "Step {number}"
+    },
+    "pricing": {
+      "title": "Plans & Pricing",
+      "subtitle": "Simple pricing. No hidden fees. Advance your business.",
+      "choose": "Try This Plan",
+      "note": "All listings are subject to our fair marketplace validation process. Select the plan that best fits your business and growth goals.",
+      "basic": {
+        "name": "Basic Plan",
+        "description": "For starters",
+        "price": "FREE",
+        "unavailable": "No Quota Posting",
+        "features": {
+          "quotas": "Commission: 5%",
+          "commission": "Number of Products: 5",
+          "products": "Number of Pictures: 10",
+          "pictures": "Access Buyer/Seller Contact Details: 25 Per Contract",
+          "buyerAccess": "Standard marketplace support"
+        }
+      },
+      "premium": {
+        "name": "Premium Plan",
+        "description": "For established sellers",
+        "price": "$40 – $150",
+        "period": " / quarter",
+        "features": {
+          "quotas": "Quota Posting",
+          "commission": "Commission: 3%",
+          "products": "Number of Products: Unlimited",
+          "pictures": "Number of Pictures: Unlimited",
+          "buyerAccess": "Access Buyer/Seller Contact Details: FREE"
+        }
+      },
+      "mostPopular": "Most Popular"
+    },
+    "policies": {
+      "compliance": {
+        "title": "Our Supplier Compliances",
+        "description": "All compliances on the suppliers marketplace must be adhered to. Failure to do so will be considered a breach in our agreements and sanctions will be imposed. Kindly view the document below.",
+        "download": "Download the Supplier Compliances.pdf"
+      },
+      "exclusions": {
+        "title": "Our Product Exclusions",
+        "description": "Certain products are prohibited from being listed on the suppliers marketplace. Kindly view the document of excluded products in order to be made aware and abstain from such acts.",
+        "download": "Download the Product Exclusions.pdf"
+      }
+    },
+    "tutorial": {
+      "title": "Use The Supplier's Marketplace The Right Way",
+      "subtitle": "Learn the essential ways to successfully maximize the marketplace for a successful trade.",
+      "play": "Play Tutorial Video"
+    }
+  },
+  "notFound": {
+    "eyebrow": "404 Not Found",
+    "title": "Oh No! There’s Nothing Here",
+    "description": "It looks like this page has been lost or is temporarily unavailable. Let’s help you find your way back.",
+    "backHome": "Back To Homepage",
+    "imageAlt": "404 page not found illustration"
+  },
+  "whatWeDo": {
+    "backedTech": "Backed by Technology",
+    "backedTechDesc": "Our data are reliably informed by the large network of people and partners we have across the various countries in Africa. This data is updated regularly to provide key information about products made in Africa.",
+    "monitoring": "Monitoring & Real-time Reporting",
+    "productMap": "Product Mapping",
+    "SeasonalityData": "Seasonality Data",
+    "commodityPrice": "Updated Commodity Prices",
+    "instantPayment": "Instant Payments across Africa",
+    "providingVisibility": "Providing Visibility and Access to African Products",
+    "providingVisibilitydesc": "Traders of Africa has provided a unified platform for buyers and suppliers of African products. We are committed to promoting goods that are grown, produced or manufactured in Africa.",
+    "viewProducts": "View products",
+    "buyerHub": "Buyer’s Hub",
+    "buyerHubDesc": "Buyers from all over the world can easily access African products through our buyers hub. Browse through our selection of various products, ranging from agro commodities to finished goods.",
+    "onlineMarket": "Online Marketplace",
+    "onlineMarketDesc": "We have created a platform to showcase African products from verified suppliers across the continent. Producers and suppliers in Africa can have access to local and international markets.",
+    "foreFront": "We are at the forefront of trade financing across Africa",
+    "foreFrontDesc": "Through Tofa Pay, we facilitate trade by financing the supply of various agro products. Genuine suppliers of African products who have confirmed orders backed by an acceptable payment term can request for funds.",
+    "foreFrontDesc2": "We can also undertake to pay on behalf of factories and processors across Africa which will assist them in managing their cashflow as well as build integrity with their suppliers.",
+    "sourceProWork": "Let SourcePro do the work",
+    "sourceProWorkDesc": "We have amassed a team of sourcing professionals who work 24/7 to provide products according to our buyers’ specifications. SourcePro guarantees quality, logistics and off-take solutions to both buyers and suppliers.",
+    "BuildSupplyCapacity": "Build Supply Capacity with TOFA Academy",
+    "BuildSupplyCapacityDesc": "Through dedicated partnerships in every African country, TOFA Academy provides training and funding to farmers and aggregators for commercial agro commodities trade.",
+    "BuildSupplyCapacityDesc2": "We work closely together with SourcePro to train our cohorts on all they need to know about commercial agribusiness. We're also dedicated to providing the needed financing and direct offtake of all products. Become a member of our TOFA Tribe, where we'll mentor you for impact and monitor you for success!"
+  },
+  "ourImpact": {
+    "customerStory": "Customer Stories",
+    "customerDesc": "I'm delighted TOFA has brought technology into agriculture, which is desperately needed in the field; also, their creation of market access addresses a key difficulty for individuals in agribusiness, particularly women.",
+    "speaker": "Dr Ajibike Saratu Oluwatimilehin, 50 Million Women Speak"
+  },
+  "Nav": {
+    "whatsapp": "Chat with us on WhatsApp",
+    "join": "Join for free",
+    "login": "Login",
+    "logout": "Logout",
+    "signUp": "Sign Up",
+    "sellOnTofa": "Sell on TOFA",
+    "requestQuote": "Request for quote",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "account": "My Account",
+    "cart": "Cart",
+    "orders": "My Orders",
+    "settings": "Settings",
+    "search": {
+      "placeholder": "Search products, brands & categories..."
+    },
+    "about": {
+      "label": "Company",
+      "ourStory": "Our Story",
+      "whatWeDo": "What We Do",
+      "ourImpact": "Our Impact"
+    },
+    "needHelp": {
+      "label": "Need Help",
+      "contactUs": "Contact us",
+      "faq": "FAQ",
+      "support": "Support"
+    },
+    "buyer": {
+      "label": "Buyers",
+      "buyComm": " Buy commodities",
+      "productInquiry": "Product Inquiry",
+      "goodInStock": "Goods in Stock"
+    },
+    "seller": {
+      "label": "Sellers",
+      "marketplace": "Marketplace",
+      "howToTrade": "How to trade",
+      "searchRFQ": "Search RFQ's"
+    },
+    "dashboard": "Dashboard",
+    "logoutConfirm": {
+      "title": "Log out?",
+      "description": "You'll need to log in again to access your account.",
+      "confirm": "Log out",
+      "cancel": "Cancel",
+      "confirmAllDevices": "Log out of all devices"
+    }
+  },
+  "Hero": {
+    "categories": {
+      "categories": "Categories",
+      "allCategories": "All Categories",
+      "subcategories": "Subcategories",
+      "popular": "Popular",
+      "electronics": "Electronics",
+      "fashion": "Fashion",
+      "Agriculture": "Agriculture",
+      "Other Agriculture Products": "Other Agriculture Products",
+      "Agricultural Waste": "Agricultural Waste",
+      "Plant Seeds & Bulbs": "Plant Seeds & Bulbs",
+      "Vegetable Seeds": "Vegetable Seeds",
+      "Sunflower Seeds": "Sunflower Seeds",
+      "Sesame Seeds": "Sesame Seeds",
+      "Cotton Seeds": "Cotton Seeds",
+      "Flower Bulbs": "Flower Bulbs",
+      "Beans": "Beans",
+      "Soybeans": "Soybeans",
+      "Other Beans": "Other Beans",
+      "Coffee Beans": "Coffee Beans",
+      "Vanilla Beans": "Vanilla Beans",
+      "Cocoa Beans": "Cocoa Beans",
+      "Fruit": "Fruit",
+      "Dried Fruit": "Dried Fruit",
+      "Orange": "Orange",
+      "Mango": "Mango",
+      "Pineapple": "Pineapple",
+      "Apples": "Apples",
+      "Avocados": "Avocados",
+      "Bananas": "Bananas",
+      "Grapes": "Grapes",
+      "Pears": "Pears",
+      "Other Fruits": "Other Fruits",
+      "Herbal Cigars & Cigarettes": "Herbal Cigars & Cigarettes",
+      "Tobacco": "Tobacco",
+      "Cigars": "Cigars",
+      "Cigarettes": "Cigarettes",
+      "Nuts & Kernels": "Nuts & Kernels",
+      "Almond": "Almond",
+      "Cashew Nuts": "Cashew Nuts",
+      "Peanuts": "Peanuts",
+      "Walnuts": "Walnuts",
+      "Other Nuts & Kernels": "Other Nuts & Kernels",
+      "Ornamental Plants": "Ornamental Plants",
+      "Dried Flowers": "Dried Flowers",
+      "Fresh Cut Flowers": "Fresh Cut Flowers",
+      "Roses": "Roses",
+      "House Plants": "House Plants",
+      "Outdoor Plants": "Outdoor Plants",
+      "Plant & Animal Oil": "Plant & Animal Oil",
+      "Coconut Oil": "Coconut Oil",
+      "Corn Oil": "Corn Oil",
+      "Palm Oil": "Palm Oil",
+      "Soybean Oil": "Soybean Oil",
+      "Sunflower Oil": "Sunflower Oil",
+      "Other Plant & Animal Oil": "Other Plant & Animal Oil",
+      "Timber Raw Materials": "Timber Raw Materials",
+      "Bamboo Products": "Bamboo Products",
+      "Logs": "Logs",
+      "Coconut Fiber": "Coconut Fiber",
+      "Palm Fiber": "Palm Fiber",
+      "Vegetables": "Vegetables",
+      "Fresh Potatoes": "Fresh Potatoes",
+      "Fresh Tomatoes": "Fresh Tomatoes",
+      "Fresh Carrots": "Fresh Carrots",
+      "Fresh Vegetables": "Fresh Vegetables",
+      "Fresh Onions": "Fresh Onions",
+      "Fresh Garlic": "Fresh Garlic",
+      "Other Fresh Vegetables": "Other Fresh Vegetables",
+      "Animal Products": "Animal Products",
+      "Eggs": "Eggs",
+      "Honey": "Honey",
+      "Meat & Poultry": "Meat & Poultry",
+      "Livestock": "Livestock",
+      "Animal Produce": "Animal Produce",
+      "Fresh Seafood": "Fresh Seafood",
+      "Agricultural Supplies": "Agricultural Supplies",
+      "Animal Feeds": "Animal Feeds",
+      "Fish Meal": "Fish Meal",
+      "Hay": "Hay",
+      "Soybean Meal": "Soybean Meal",
+      "Other Animal Feed": "Other Animal Feed",
+      "Agricultural Growing Media": "Agricultural Growing Media",
+      "Peat": "Peat",
+      "Perlite": "Perlite",
+      "Agrochemicals & Pesticides": "Agrochemicals & Pesticides",
+      "Fungicides": "Fungicides",
+      "Herbicides": "Herbicides",
+      "Insecticides": "Insecticides",
+      "Fertilizer": "Fertilizer",
+      "Organic Fertilizer": "Organic Fertilizer",
+      "Compound Fertilizer": "Compound Fertilizer",
+      "Urea": "Urea",
+      "Other Fertilizer": "Other Fertilizer",
+      "Organic Produce": "Organic Produce",
+      "Household Goods": "Household Goods",
+      "Transport": "Transport",
+      "Furniture": "Furniture",
+      "Home Furniture": "Home Furniture",
+      "Commercial Furniture": "Commercial Furniture",
+      "Outdoor Furniture": "Outdoor Furniture",
+      "Furniture Hardware": "Furniture Hardware",
+      "Baby Furniture": "Baby Furniture",
+      "Plastic Furniture": "Plastic Furniture",
+      "Beauty & Personal Care": "Beauty & Personal Care",
+      "Beauty Care": "Beauty Care",
+      "Hair Extensions & Wigs": "Hair Extensions & Wigs",
+      "Skin Care": "Skin Care",
+      "Sanitary Paper": "Sanitary Paper",
+      "Make up": "Make up",
+      "Baby Care": "Baby Care",
+      "Health & Medical": "Health & Medical",
+      "Health Care Products": "Health Care Products",
+      "Herbal Medicines": "Herbal Medicines",
+      "Animal & Veterinary": "Animal & Veterinary",
+      "Packaging & Supplies": "Packaging & Supplies",
+      "Printing": "Printing",
+      "Paper & Paperboard": "Paper & Paperboard",
+      "Plastic Packaging": "Plastic Packaging",
+      "Printing Materials": "Printing Materials",
+      "Paper Packaging": "Paper Packaging",
+      "Cosmetics Packaging": "Cosmetics Packaging",
+      "Office & School Supplies": "Office & School Supplies",
+      "Office Paper": "Office Paper",
+      "Notebooks & Writing Pads": "Notebooks & Writing Pads",
+      "Art Supplies": "Art Supplies",
+      "Minerals & Mettalurgy": "Minerals & Mettalurgy",
+      "Rubber & Plastics": "Rubber & Plastics",
+      "Chemical Machinery & Equipments": "Chemical Machinery & Equipments",
+      "Agrochemicals": "Agrochemicals",
+      "Catalysts": "Catalysts",
+      "Paints & Coatings": "Paints & Coatings",
+      "Basic Organic Chemicals": "Basic Organic Chemicals",
+      "Admixture & Additives": "Admixture & Additives",
+      "Minerals & Metals": "Minerals & Metals",
+      "Steel": "Steel",
+      "Aluminium": "Aluminium",
+      "Iron": "Iron",
+      "Metal Scrap": "Metal Scrap",
+      "Metal works": "Metal works",
+      "Iron Ore": "Iron Ore",
+      "Other Minerals": "Other Minerals",
+      "Chemicals": "Chemicals",
+      "Plastic Products": "Plastic Products",
+      "Rubber Products": "Rubber Products",
+      "Plastic Raw Materials": "Plastic Raw Materials",
+      "Rubber Raw Materials": "Rubber Raw Materials",
+      "Other Chemicals": "Other Chemicals",
+      "Construction Materials": "Construction Materials",
+      "Doors & Windows": "Doors & Windows",
+      "Door & Window Accessories": "Door & Window Accessories",
+      "Gates": "Gates",
+      "Pipes & Fittings": "Pipes & Fittings",
+      "Cable Conduits": "Cable Conduits",
+      "Plastic Tubes": "Plastic Tubes",
+      "Copper Pipes": "Copper Pipes",
+      "Steel Pipes": "Steel Pipes",
+      "Aluminium Pipes": "Aluminium Pipes",
+      "Composite Pipes": "Composite Pipes",
+      "Building Materials": "Building Materials",
+      "Plastic Building Materials": "Plastic Building Materials",
+      "Soundproofing Materials": "Soundproofing Materials",
+      "Building Glass": "Building Glass",
+      "Finishing Materials": "Finishing Materials",
+      "Decorating Design": "Decorating Design",
+      "Curtain Walls & Accessories": "Curtain Walls & Accessories",
+      "Furniture Paint": "Furniture Paint",
+      "Masonry Materials": "Masonry Materials",
+      "Tiles & Accessories": "Tiles & Accessories",
+      "Mosaics": "Mosaics",
+      "Mouldings": "Mouldings",
+      "Aluminium Panels": "Aluminium Panels",
+      "Site Supplies": "Site Supplies",
+      "Bitumen": "Bitumen",
+      "Cement": "Cement",
+      "Concrete": "Concrete",
+      "Sand": "Sand",
+      "Construction Stone": "Construction Stone",
+      "Quarry Stone & Slabs": "Quarry Stone & Slabs",
+      "Stone Carvings & Sculptures": "Stone Carvings & Sculptures",
+      "Farm Machinery & Equipment": "Farm Machinery & Equipment",
+      "Gardening tools": "Gardening tools",
+      "Brush Cutters": "Brush Cutters",
+      "Chainsaws": "Chainsaws",
+      "Sprayers": "Sprayers",
+      "Hoes": "Hoes",
+      "Other Gardening Tools": "Other Gardening Tools",
+      "Pets": "Pets",
+      "Animal Husbandry Equipment": "Animal Husbandry Equipment",
+      "Animal Cages": "Animal Cages",
+      "Animal Feeders": "Animal Feeders",
+      "Egg Incubators": "Egg Incubators",
+      "Other Animal Husbandry Equipments": "Other Animal Husbandry Equipments",
+      "Grain": "Grain",
+      "Corn": "Corn",
+      "Wheat": "Wheat",
+      "Millet": "Millet",
+      "Oats": "Oats",
+      "Rice": "Rice",
+      "Other Grains": "Other Grains",
+      "Mushrooms & Truffles": "Mushrooms & Truffles",
+      "Dried Mushrooms": "Dried Mushrooms",
+      "Fresh Mushrooms": "Fresh Mushrooms",
+      "Frozen Mushrooms": "Frozen Mushrooms",
+      "Food & Beverage": "Food & Beverage",
+      "Grain Products": "Grain Products",
+      "Starch": "Starch",
+      "Flour": "Flour",
+      "Noodles": "Noodles",
+      "Pasta": "Pasta",
+      "Cereal": "Cereal",
+      "Seafood": "Seafood",
+      "Lobster": "Lobster",
+      "Crab": "Crab",
+      "Shellfish": "Shellfish",
+      "Seafood snacks": "Seafood snacks",
+      "Seasoning": "Seasoning",
+      "Sugar": "Sugar",
+      "Sauce": "Sauce",
+      "Vinegar": "Vinegar",
+      "Soy sauce": "Soy sauce",
+      "Salt": "Salt",
+      "Spices & Herbs Products": "Spices & Herbs Products",
+      "Dairy": "Dairy",
+      "Butter": "Butter",
+      "Ice Cream": "Ice Cream",
+      "Yogurt": "Yogurt",
+      "Dairy Extractive": "Dairy Extractive",
+      "Milk": "Milk",
+      "Cheese": "Cheese",
+      "Apparel": "Apparel",
+      "Fashion": "Fashion",
+      "Men's Clothing": "Men's Clothing",
+      "Garment Accessories": "Garment Accessories",
+      "Plus Size Clothing": "Plus Size Clothing",
+      "Women's Clothing": "Women's Clothing",
+      "Sportswear": "Sportswear",
+      "Underwear": "Underwear",
+      "Artists & decorated Materials ": "Artists & decorated Materials ",
+      "Textiles & Leather": "Textiles & Leather",
+      "Home Textile": "Home Textile",
+      "Fabric": "Fabric",
+      "Leather": "Leather",
+      "Yarn": "Yarn",
+      "Fiber": "Fiber",
+      "Fur": "Fur",
+      "Fashion Accessories": "Fashion Accessories",
+      "Headwear": "Headwear",
+      "Belts": "Belts",
+      "Neckwear": "Neckwear",
+      "Children's Shoes": "Children's Shoes",
+      "Belt Accessories": "Belt Accessories",
+      "Gloves & Mittens": "Gloves & Mittens",
+      "Slippers": "Slippers",
+      "Clothing and Shoes": "Clothing and Shoes",
+      "Traditional Ornaments & Jewelry": "Traditional Ornaments & Jewelry",
+      "Beads": "Beads",
+      "Earrings": "Earrings",
+      "Necklace": "Necklace",
+      "Home & Furniture": "Home & Furniture",
+      "Home & Garden": "Home & Garden",
+      "Home Decor": "Home Decor",
+      "Tableware": "Tableware",
+      "Household Sundries": "Household Sundries",
+      "Garden Supplies": "Garden Supplies",
+      "Laundry Products": "Laundry Products",
+      "Home Storage": "Home Storage",
+      "prevAriaLabel": "Scroll to previous categories",
+      "nextAriaLabel": "Scroll to next categories"
+    }
+  },
+  "Product": {
+    "addToCart": "Add to Cart"
+  },
+  "HowItWorks": {
+    "weProvide": "We provide the",
+    "bestCustomer": "best customer experiences",
+    "howItWorks": "How it works"
+  },
+  "steps": {
+    "tradeConfidence": {
+      "title": "Trade with confidence",
+      "desc": "Experience a secure platform where orders are processed upon payment confirmation"
+    },
+    "negotiations": {
+      "title": "Negotiations",
+      "desc": "Negotiate product prices directly with sellers before making a purchase."
+    },
+    "rfq": {
+      "title": "RFQ's",
+      "desc": "Request for quotes and await responses from various sellers for your request."
+    },
+    "network": {
+      "title": "Diverse African Network",
+      "desc": "Explore a network of African traders to easily purchase products across the continent."
+    }
+  },
+  "videoGuide": {
+    "howToPlaceOrder": {
+      "title": "How to place an order successfully."
+    },
+    "howToRequestQuote": {
+      "title": "How to request for quote."
+    },
+    "howToBecomeSeller": {
+      "title": "How to become a seller."
+    }
+  },
+  "moreCollection": {
+    "computingDeals": {
+      "title": "Computing Deals"
+    },
+    "fitnessDeals": {
+      "title": "Fitness Deals"
+    },
+    "mobileAccessories": {
+      "title": "Mobile Accessories"
+    },
+    "gamingDeals": {
+      "title": "Gaming Deals"
+    },
+    "homeAppliances": {
+      "title": "Home Appliances"
+    }
+  },
+  "ProductCatalogue": {
+    "home": "Home",
+    "searchResult": "Search result",
+    "breadcrumbLabel": "Breadcrumb",
+    "foundResults": "Found {count} results for",
+    "selectedFilters": "{count, plural, one {# filter selected} other {# filters selected}}",
+    "clearAll": "Clear all",
+    "sortBy": "Sort by",
+    "gallery": "Gallery",
+    "list": "List",
+    "galleryView": "Gallery view",
+    "listView": "List view",
+    "collections": {
+      "popular": "Popular Products",
+      "new": "Newly Added Products",
+      "all": "All Products"
+    },
+    "sort": {
+      "relevance": "Best match",
+      "newest": "Newest arrivals",
+      "oldest": "Oldest listed",
+      "price-low": "Price: low to high",
+      "price-high": "Price: high to low",
+      "rating": "Highest rated",
+      "reviews": "Most reviewed",
+      "name-asc": "Product name: A–Z"
+    },
+    "filters": {
+      "title": "Filters",
+      "reset": "Reset all",
+      "close": "Close filters",
+      "categories": "Categories",
+      "allCategories": "All categories",
+      "price": "Price",
+      "min": "Minimum price",
+      "max": "Maximum price",
+      "rating": "Customer rating",
+      "ratingUp": "{rating}+ & up",
+      "availability": "Availability & supplier",
+      "verified": "Verified suppliers",
+      "readyToShip": "Ready to ship",
+      "maximumMinimumOrder": "Maximum minimum order",
+      "anyQuantity": "Any quantity",
+      "units": "units",
+      "apply": "Apply",
+      "clear": "Clear"
+    },
+    "empty": {
+      "title": "No products found",
+      "description": "Try removing a filter or searching for another product."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "pageOf": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "Auth": {
+    "signUp": {
+      "badge": "Join the marketplace",
+      "title": "Create your TOFA account",
+      "subtitle": "Trade across Africa's largest verified marketplace for businesses and buyers alike.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@company.com",
+      "emailUnavailable": "Email unavailable",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Create a strong password",
+      "referralTrigger": "Have a referral code?",
+      "referralPlaceholder": "Enter referral code",
+      "submit": "Create your account",
+      "submitting": "Creating your account…",
+      "orDivider": "or sign up with email",
+      "google": "Continue with Google",
+      "haveAccount": "Already have a TOFA account?",
+      "login": "Log in",
+      "backHome": "Back to home",
+      "termsPrefix": "I agree to TOFA's",
+      "terms": "Terms of Use",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "requirements": {
+        "length": "At least 8 characters",
+        "upper": "One uppercase letter",
+        "lower": "One lowercase letter",
+        "number": "One number"
+      },
+      "success": {
+        "title": "Check your inbox",
+        "description": "We've sent a 6-digit verification code to",
+        "resend": "Resend code",
+        "resending": "Resending…",
+        "changeEmail": "Use a different email"
+      },
+      "showcase": {
+        "title": "Trade with verified African suppliers, at scale",
+        "subtitle": "From Lagos to Nairobi to Accra — source, sell and ship across borders on one trusted marketplace.",
+        "suppliers": "Verified suppliers",
+        "countries": "Countries reached",
+        "volume": "Trade volume"
+      }
+    },
+    "verifyEmail": {
+      "title": "Verify your email",
+      "subtitle": "Enter the 6-digit code to activate your account.",
+      "otpLabel": "Verification code",
+      "sentTo": "We've sent a 6-digit code to",
+      "verify": "Verify Email",
+      "verifying": "Verifying…",
+      "resend": "Resend OTP",
+      "resending": "Resending…",
+      "resendIn": "Resend OTP in {timer}",
+      "changeEmail": "Change Email / Back",
+      "invalidEmail": "Enter a valid email address",
+      "invalidOtp": "Enter the complete 6-digit code",
+      "missingToken": "This verification link is invalid. Please sign up again.",
+      "success": "Your email has been verified.",
+      "verifyError": "We couldn't verify your email. Please check the code and try again.",
+      "resendSuccess": "A new verification code is on its way.",
+      "resendError": "We couldn't resend the code. Please try again."
+    },
+    "login": {
+      "badge": "Welcome back",
+      "title": "Welcome back",
+      "subtitle": "Log in to continue trading on Africa's largest verified marketplace.",
+      "showcase": {
+        "title": "Pick up right where you left off",
+        "subtitle": "Manage orders, chat with suppliers, and track shipments — all in one place."
+      },
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "orDivider": "or log in with email",
+      "google": "Continue with Google",
+      "noAccount": "Don't have a TOFA account?",
+      "register": "Create one",
+      "verificationRequired": "Please verify your email to continue. We've sent you a new code.",
+      "success": "Welcome back!",
+      "loginError": "We couldn't log you in. Please check your details and try again."
+    },
+    "forgotPassword": {
+      "badge": "Account recovery",
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email address and we'll send you a code to reset it.",
+      "showcase": {
+        "title": "Get back into your account in minutes",
+        "subtitle": "Verified suppliers and buyers trust TOFA to keep their accounts secure."
+      },
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@company.com",
+      "submit": "Send reset code",
+      "submitting": "Sending…",
+      "backToLogin": "Back to login",
+      "success": "A reset code is on its way to your email.",
+      "submitError": "We couldn't send the reset code. Please try again."
+    },
+    "resetPassword": {
+      "badge": "Almost there",
+      "title": "Reset your password",
+      "subtitle": "Enter the code we sent you and choose a new password.",
+      "showcase": {
+        "title": "Trade with confidence",
+        "subtitle": "Your account, your data, and your trade routes stay protected on TOFA."
+      },
+      "sentTo": "We've sent a 6-digit code to",
+      "otpLabel": "Verification code",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "Create a strong password",
+      "submit": "Reset password",
+      "submitting": "Resetting…",
+      "backToLogin": "Back to login",
+      "success": "Your password has been reset. You can now log in.",
+      "submitError": "We couldn't reset your password. Please check the code and try again."
+    },
+    "termsModal": {
+      "title": "Accept our Terms to continue",
+      "description": "Before you start trading on TOFA, please review and accept our Terms of Use and Privacy Policy.",
+      "accept": "Accept & Continue",
+      "decline": "Not now"
+    }
+  },
+  "Dashboard": {
+    "nav": {
+      "overview": {
+        "label": "Overview",
+        "dashboard": "Dashboard"
+      },
+      "buying": {
+        "label": "Buying",
+        "orders": "Orders",
+        "rfqs": "RFQs",
+        "messages": "Messages",
+        "savedProducts": "Saved Products"
+      },
+      "afterSales": {
+        "label": "After Sales",
+        "reviews": "Reviews",
+        "disputes": "Disputes",
+        "returnsRefunds": "Returns & Refunds"
+      },
+      "rewards": {
+        "label": "Rewards",
+        "referrals": "Referrals & Rewards"
+      },
+      "account": {
+        "label": "Account",
+        "profileSettings": "Profile & Settings"
+      }
+    },
+    "sellerPromo": {
+      "title": "Start selling on TOFA",
+      "description": "Reach more buyers across African markets.",
+      "cta": "Become a Seller",
+      "pendingTitle": "Application under review",
+      "pendingDescription": "We're reviewing your seller application. We'll notify you once it's approved."
+    },
+    "becomeSellerModal": {
+      "title": "Become a seller",
+      "description": "Tell us about your business. We'll review your application and get back to you shortly.",
+      "storeName": "Store name",
+      "storeNamePlaceholder": "e.g. Amara's Fresh Produce",
+      "businessCategory": "Business category",
+      "businessCategoryPlaceholder": "e.g. Fresh produce, Grains",
+      "phoneNumber": "Phone number",
+      "phoneNumberPlaceholder": "e.g. +234 800 000 0000",
+      "country": "Country",
+      "countryPlaceholder": "e.g. Nigeria",
+      "cancel": "Cancel",
+      "submit": "Submit application",
+      "submitting": "Submitting…",
+      "success": "Application submitted! We'll review it and notify you soon.",
+      "submitError": "We couldn't submit your application. Please try again."
+    },
+    "topbar": {
+      "overviewTitle": "Dashboard",
+      "loading": "Loading your dashboard…",
+      "messages": "Messages",
+      "notifications": "Notifications"
+    },
+    "overview": {
+      "greeting": "Welcome back, {name}",
+      "fallbackName": "there",
+      "subtitle": "Here's what's happening with your account today.",
+      "analyticsError": "We couldn't load your analytics for this period. Please try again.",
+      "dateRange": {
+        "label": "Analytics period",
+        "title": "Choose a date range",
+        "startHint": "Select the start date",
+        "endHint": "Now select the end date",
+        "chooseEnd": "Choose an end date",
+        "last7Days": "Last 7 days",
+        "last30Days": "Last 30 days",
+        "thisMonth": "This month",
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "close": "Close calendar",
+        "refreshing": "Refreshing analytics"
+      },
+      "profilePrompt": {
+        "title": "Complete your profile",
+        "description": "Add your details to personalize your account and make checkout faster.",
+        "action": "Update profile"
+      },
+      "stats": {
+        "orders": "Orders",
+        "ordersHint": "No orders yet",
+        "rfqs": "RFQs",
+        "rfqsHint": "No requests yet",
+        "points": "Reward points",
+        "pointsHint": "Earn points on every order"
+      },
+      "recentOrders": {
+        "title": "Recent orders",
+        "empty": "You haven't placed any orders yet. Once you do, they'll show up here."
+      }
+    },
+    "profileModal": {
+      "title": "Update your profile",
+      "description": "Keep your personal and delivery details up to date.",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Victor",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Ejiogu",
+      "phoneNumber": "Phone number",
+      "phoneNumberPlaceholder": "+234 801 234 5678",
+      "language": "Preferred language",
+      "languagePlaceholder": "Select a language",
+      "deliveryAddress": "Delivery address",
+      "deliveryAddressPlaceholder": "Lekki, Lagos",
+      "companyBio": "Company bio (optional)",
+      "companyBioPlaceholder": "Tell us briefly about your company",
+      "cancel": "Cancel",
+      "submit": "Save profile",
+      "submitting": "Saving…",
+      "success": "Your profile has been updated.",
+      "submitError": "We couldn't update your profile. Please try again."
+    }
+  },
+  "ProductInfo": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "products": "Products",
+    "clickToZoom": "Click to zoom",
+    "variantImages": "Available colors",
+    "close": "Close",
+    "stockStatus": {
+      "in-stock": "In Stock",
+      "low-stock": "Low Stock",
+      "out-of-stock": "Out of Stock"
+    },
+    "save": "Save",
+    "saved": "Saved",
+    "requestQuote": "Request Quote",
+    "addToCart": "Add to Cart",
+    "quantity": "Quantity",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "moqNote": "Minimum order: {count} {unit}",
+    "minOrder": "MOQ",
+    "supplyCapacity": "Supply Capacity",
+    "leadTime": "Lead Time",
+    "sku": "SKU",
+    "reviewCount": "{count, plural, one {# review} other {# reviews}}",
+    "star": "star",
+    "rating": "Rating",
+    "responseRate": "Response Rate",
+    "memberSince": "Member Since",
+    "visitStore": "Visit Store",
+    "messageSupplier": "Message supplier",
+    "shareProduct": "Share product",
+    "verifiedSeller": "Verified Seller",
+    "verifiedSupplier": "Verified supplier",
+    "bulkReady": "Bulk-ready",
+    "protectedOrder": "Protected order",
+    "sellingSince": "Selling on TOFA since {year}",
+    "searchReviews": "Search reviews",
+    "justNow": "just now",
+    "postedTime": "Posted {time}",
+    "helpfulCount": "{count, plural, one {# person found this helpful} other {# people found this helpful}}",
+    "description": "Description",
+    "reviews": "Reviews",
+    "noReviewsFound": "No reviews found",
+    "viewAllReviews": "View All Reviews",
+    "moreFromSeller": "More from {store}",
+    "similarProducts": "Similar Products",
+    "startingFrom": "Starting from",
+    "specifications": "Specifications",
+    "category": "Category",
+    "countryOfOrigin": "Country of Origin",
+    "helpful": "Helpful",
+    "notHelpful": "Not helpful",
+    "wasHelpful": "Was this helpful?"
+  }
+}

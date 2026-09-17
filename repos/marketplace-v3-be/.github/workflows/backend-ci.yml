@@ -1,0 +1,88 @@
+name: Backend CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci-root-password
+          MYSQL_DATABASE: tofa_marketplace_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: ci-root-password
+      DB_NAME: tofa_marketplace_ci
+      DB_SSL: 'false'
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20.19.5
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Use the repository npm version
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          package_manager="$(node -p "require('./package.json').packageManager")"
+          [[ $package_manager =~ ^npm@[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo 'packageManager must pin an exact npm version' >&2
+            exit 78
+          }
+          npm install --global "$package_manager" --ignore-scripts --no-audit --no-fund
+          npm --version
+
+      - name: Install dependencies
+        run: npm ci --engine-strict
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Apply migrations to a clean MySQL database
+        run: npm run migration:run:local
+
+      - name: Verify no migrations remain pending
+        run: npm run migration:show:local
+
+      - name: Verify current and rollback package database compatibility
+        run: npm run migration:verify-compatibility
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Block high and critical dependency vulnerabilities
+        run: npm audit --audit-level=high

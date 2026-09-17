@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test
+.env.test.local
+.env
+.npm-cache/
+*.log
+uploads/
+coverage/
+.DS_Store

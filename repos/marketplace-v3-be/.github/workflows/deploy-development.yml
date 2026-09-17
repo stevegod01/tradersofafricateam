@@ -1,0 +1,347 @@
+name: Deploy backend to development
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-development
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy development
+    if: github.ref == 'refs/heads/master' && vars.DEPLOY_DEV_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_APP_SERVICE_NAME: ${{ vars.AZURE_APP_SERVICE_NAME }}
+      AZURE_JUMPBOX_NAME: ${{ vars.AZURE_JUMPBOX_NAME }}
+      AZURE_RELEASE_STORAGE_ACCOUNT: ${{ vars.AZURE_RELEASE_STORAGE_ACCOUNT }}
+      AZURE_RELEASE_CONTAINER: ${{ vars.AZURE_RELEASE_CONTAINER }}
+      DEV_HEALTH_URL: ${{ vars.DEV_HEALTH_URL }}
+
+    steps:
+      - name: Validate deployment configuration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required_variables=(
+            AZURE_CLIENT_ID
+            AZURE_TENANT_ID
+            AZURE_SUBSCRIPTION_ID
+            AZURE_RESOURCE_GROUP
+            AZURE_APP_SERVICE_NAME
+            AZURE_JUMPBOX_NAME
+            AZURE_RELEASE_STORAGE_ACCOUNT
+            AZURE_RELEASE_CONTAINER
+            DEV_HEALTH_URL
+          )
+
+          for variable_name in "${required_variables[@]}"; do
+            if [[ -z "${!variable_name:-}" ]]; then
+              echo "Missing required repository variable: $variable_name" >&2
+              exit 78
+            fi
+          done
+
+          [[ $AZURE_CLIENT_ID =~ ^[0-9a-fA-F-]{36}$ ]] || { echo 'Invalid AZURE_CLIENT_ID' >&2; exit 78; }
+          [[ $AZURE_TENANT_ID =~ ^[0-9a-fA-F-]{36}$ ]] || { echo 'Invalid AZURE_TENANT_ID' >&2; exit 78; }
+          [[ $AZURE_SUBSCRIPTION_ID =~ ^[0-9a-fA-F-]{36}$ ]] || { echo 'Invalid AZURE_SUBSCRIPTION_ID' >&2; exit 78; }
+          [[ $AZURE_RESOURCE_GROUP =~ ^[-._()A-Za-z0-9]+$ ]] || { echo 'Invalid AZURE_RESOURCE_GROUP' >&2; exit 78; }
+          [[ $AZURE_APP_SERVICE_NAME =~ ^[a-z0-9-]{2,60}$ ]] || { echo 'Invalid AZURE_APP_SERVICE_NAME' >&2; exit 78; }
+          [[ $AZURE_JUMPBOX_NAME =~ ^[-A-Za-z0-9]{1,64}$ ]] || { echo 'Invalid AZURE_JUMPBOX_NAME' >&2; exit 78; }
+          [[ $AZURE_RELEASE_STORAGE_ACCOUNT =~ ^[a-z0-9]{3,24}$ ]] || { echo 'Invalid AZURE_RELEASE_STORAGE_ACCOUNT' >&2; exit 78; }
+          [[ $AZURE_RELEASE_CONTAINER =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo 'Invalid AZURE_RELEASE_CONTAINER' >&2; exit 78; }
+          [[ $DEV_HEALTH_URL =~ ^https://[A-Za-z0-9.-]+/api/health$ ]] || { echo 'DEV_HEALTH_URL must be an HTTPS /api/health endpoint' >&2; exit 78; }
+
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20.19.5
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Use the repository npm version
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          package_manager="$(node -p "require('./package.json').packageManager")"
+          [[ $package_manager =~ ^npm@[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo 'packageManager must pin an exact npm version' >&2
+            exit 78
+          }
+          npm install --global "$package_manager" --ignore-scripts --no-audit --no-fund
+          npm --version
+
+      - name: Install dependencies
+        run: npm ci --engine-strict
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Block vulnerable production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Create immutable release archive
+        id: release
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          release_id="$(date -u +%Y%m%dT%H%M%SZ)-${GITHUB_SHA}"
+          archive_name="tofa-backend-${release_id}.tar.gz"
+          blob_name="backend/${release_id}/${archive_name}"
+
+          git archive --format=tar.gz --output "$archive_name" "$GITHUB_SHA"
+          archive_sha256="$(sha256sum "$archive_name" | cut -d ' ' -f 1)"
+
+          echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
+          echo "archive_name=$archive_name" >> "$GITHUB_OUTPUT"
+          echo "archive_sha256=$archive_sha256" >> "$GITHUB_OUTPUT"
+          echo "blob_name=$blob_name" >> "$GITHUB_OUTPUT"
+
+      - name: Sign in to Azure with GitHub OIDC
+        id: azure_login
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Allow the local Next.js development origin
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          local_frontend_origin='http://localhost:3000'
+          api_version='2026-03-15'
+          web_config_uri="https://management.azure.com/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${AZURE_RESOURCE_GROUP}/providers/Microsoft.Web/sites/${AZURE_APP_SERVICE_NAME}/config/web?api-version=${api_version}"
+
+          web_config_json="$(az rest \
+            --method get \
+            --uri "$web_config_uri" \
+            --only-show-errors \
+            --output json)"
+
+          cors_patch_json="$(jq -cn \
+            --arg origin "$local_frontend_origin" \
+            --argjson current "$web_config_json" \
+            '{
+              properties: {
+                cors: (($current.properties.cors // {}) | .allowedOrigins = (((.allowedOrigins // []) + [$origin]) | unique))
+              }
+            }')"
+
+          # Patch only CORS. The higher-level `az webapp cors add` command
+          # sends the complete site configuration and unnecessarily
+          # revalidates linked VNet resources.
+          az rest \
+            --method patch \
+            --uri "$web_config_uri" \
+            --body "$cors_patch_json" \
+            --only-show-errors \
+            --output none
+
+          az rest \
+            --method get \
+            --uri "$web_config_uri" \
+            --only-show-errors \
+            --output json |
+            jq -e --arg origin "$local_frontend_origin" \
+              '.properties.cors.allowedOrigins | index($origin) != null' >/dev/null
+
+      - name: Configure development audit and settlement settings
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          az webapp config appsettings set \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_APP_SERVICE_NAME" \
+            --settings \
+              PAYSTACK_REFUNDS_ENABLED=false \
+              AUDIT_LOG_RETENTION_DAYS=0 \
+              AUDIT_FINANCIAL_RETENTION_DAYS=0 \
+              AUDIT_SECURITY_RETENTION_DAYS=0 \
+              AUDIT_EXPORT_MAX_ROWS=10000 \
+              AUDIT_EXPORT_TTL_HOURS=24 \
+              'PAYOUT_ENCRYPTION_KEYS={}' \
+              SETTLEMENT_WORKER_ENABLED=true \
+              PAYOUT_PAYSTACK_ENABLED=false \
+              PAYOUT_AUTOMATIC_PROCESSING_ENABLED=false \
+            --only-show-errors \
+            --output none
+
+          # Disabled integrations have no credential. Keep blank values absent
+          # instead of storing empty secret-shaped application settings.
+          az webapp config appsettings delete \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_APP_SERVICE_NAME" \
+            --setting-names \
+              PAYSTACK_SECRET_KEY \
+              PAYOUT_ENCRYPTION_KEY_ID \
+              PAYOUT_PAYSTACK_SECRET_KEY \
+            --only-show-errors \
+            --output none
+
+          settings_json="$(az webapp config appsettings list \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_APP_SERVICE_NAME" \
+            --query "[?starts_with(name, 'AUDIT_') || starts_with(name, 'PAYOUT_') || name == 'PAYSTACK_REFUNDS_ENABLED' || name == 'SETTLEMENT_WORKER_ENABLED']" \
+            --output json)"
+
+          verify_setting() {
+            local setting_name=$1
+            local expected_value=$2
+            local actual_value
+            actual_value="$(jq -r --arg name "$setting_name" '.[] | select(.name == $name) | .value' <<< "$settings_json")"
+            [[ $actual_value == "$expected_value" ]] || {
+              echo "Development app setting verification failed: $setting_name" >&2
+              exit 78
+            }
+          }
+
+          verify_setting PAYSTACK_REFUNDS_ENABLED false
+          verify_setting AUDIT_LOG_RETENTION_DAYS 0
+          verify_setting AUDIT_FINANCIAL_RETENTION_DAYS 0
+          verify_setting AUDIT_SECURITY_RETENTION_DAYS 0
+          verify_setting AUDIT_EXPORT_MAX_ROWS 10000
+          verify_setting AUDIT_EXPORT_TTL_HOURS 24
+          verify_setting PAYOUT_ENCRYPTION_KEYS '{}'
+          verify_setting SETTLEMENT_WORKER_ENABLED true
+          verify_setting PAYOUT_PAYSTACK_ENABLED false
+          verify_setting PAYOUT_AUTOMATIC_PROCESSING_ENABLED false
+
+          for absent_setting in \
+            PAYSTACK_SECRET_KEY \
+            PAYOUT_ENCRYPTION_KEY_ID \
+            PAYOUT_PAYSTACK_SECRET_KEY; do
+            if jq -e --arg name "$absent_setting" '.[] | any(.name == $name)' \
+              <<< "$settings_json" >/dev/null; then
+              echo "Blank credential setting must be absent: $absent_setting" >&2
+              exit 78
+            fi
+          done
+
+      - name: Upload reviewed release to private Blob Storage
+        shell: bash
+        env:
+          ARCHIVE_NAME: ${{ steps.release.outputs.archive_name }}
+          BLOB_NAME: ${{ steps.release.outputs.blob_name }}
+          RELEASE_ID: ${{ steps.release.outputs.release_id }}
+        run: |
+          set -Eeuo pipefail
+          az storage blob upload \
+            --account-name "$AZURE_RELEASE_STORAGE_ACCOUNT" \
+            --container-name "$AZURE_RELEASE_CONTAINER" \
+            --name "$BLOB_NAME" \
+            --file "$ARCHIVE_NAME" \
+            --auth-mode login \
+            --overwrite false \
+            --metadata githubSha="$GITHUB_SHA" githubRunId="$GITHUB_RUN_ID" releaseId="$RELEASE_ID" \
+            --only-show-errors \
+            --output none
+
+      - name: Start private release runner when needed
+        id: jumpbox
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          power_state="$(az vm get-instance-view \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_JUMPBOX_NAME" \
+            --query "instanceView.statuses[?starts_with(code, 'PowerState/')].code | [0]" \
+            --output tsv)"
+
+          echo "Initial jumpbox state: ${power_state:-unknown}"
+          if [[ $power_state == PowerState/deallocated || $power_state == PowerState/stopped ]]; then
+            echo 'started_by_workflow=true' >> "$GITHUB_OUTPUT"
+            az vm start \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_JUMPBOX_NAME" \
+              --only-show-errors \
+              --output none
+          elif [[ $power_state == PowerState/running ]]; then
+            echo 'started_by_workflow=false' >> "$GITHUB_OUTPUT"
+          else
+            echo "Jumpbox is not deployable from state: ${power_state:-unknown}" >&2
+            exit 69
+          fi
+
+      - name: Deploy from the private release runner
+        shell: bash
+        env:
+          ARCHIVE_SHA256: ${{ steps.release.outputs.archive_sha256 }}
+          BLOB_NAME: ${{ steps.release.outputs.blob_name }}
+          RELEASE_ID: ${{ steps.release.outputs.release_id }}
+        run: |
+          set -Eeuo pipefail
+          run_output="$(az vm run-command invoke \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_JUMPBOX_NAME" \
+            --command-id RunShellScript \
+            --scripts @deploy/run-development-release.sh \
+            --parameters \
+              "$AZURE_SUBSCRIPTION_ID" \
+              "$AZURE_RELEASE_STORAGE_ACCOUNT" \
+              "$AZURE_RELEASE_CONTAINER" \
+              "$BLOB_NAME" \
+              "$ARCHIVE_SHA256" \
+              "$RELEASE_ID" \
+            --query "value[].message" \
+            --output tsv)"
+
+          printf '%s\n' "$run_output"
+          if ! grep -Fqx "TOFA_RELEASE_SUCCEEDED:$RELEASE_ID" <<< "$run_output"; then
+            echo 'The private release runner did not report successful completion' >&2
+            exit 1
+          fi
+
+      - name: Verify development health through Cloudflare
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          curl \
+            --fail \
+            --silent \
+            --show-error \
+            --retry 12 \
+            --retry-all-errors \
+            --retry-delay 10 \
+            --max-time 15 \
+            "$DEV_HEALTH_URL" >/dev/null
+
+      - name: Deallocate workflow-started release runner
+        if: always() && steps.azure_login.outcome == 'success' && steps.jumpbox.outputs.started_by_workflow == 'true'
+        shell: bash
+        run: |
+          az vm deallocate \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_JUMPBOX_NAME" \
+            --only-show-errors \
+            --output none

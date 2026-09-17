@@ -1,0 +1,425 @@
+[
+  {
+    "key": "marketplaceName",
+    "category": "general",
+    "value": "Traders of Africa",
+    "valueType": "string",
+    "description": "Marketplace display name.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "defaultLanguage",
+    "category": "localization",
+    "value": "en",
+    "valueType": "string",
+    "description": "Default active marketplace language.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "defaultCountry",
+    "category": "country",
+    "value": "NG",
+    "valueType": "string",
+    "description": "Default active country.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "defaultCurrency",
+    "category": "currency",
+    "value": "NGN",
+    "valueType": "string",
+    "description": "Default currency for new selections.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "returnWindowDays",
+    "category": "return",
+    "value": 7,
+    "valueType": "number",
+    "description": "Window for newly requested returns. Existing return policy snapshots remain unchanged.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "maximumReturnEvidenceFiles",
+    "category": "return",
+    "value": 10,
+    "valueType": "number",
+    "description": "Maximum evidence files per return.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "disputeWindowDays",
+    "category": "dispute",
+    "value": 7,
+    "valueType": "number",
+    "description": "Window for new dispute requests.",
+    "isPublic": true,
+    "isEditable": true
+  },
+  {
+    "key": "maximumDisputeEvidenceFiles",
+    "category": "dispute",
+    "value": 10,
+    "valueType": "number",
+    "description": "Maximum evidence files per dispute.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "disputeAutoCloseDays",
+    "category": "dispute",
+    "value": 0,
+    "valueType": "number",
+    "description": "Reserved for the owning module; cannot enable unsupported processing.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "defaultQuoteValidityDays",
+    "category": "rfq",
+    "value": 14,
+    "valueType": "number",
+    "description": "Default validity for newly created direct RFQs.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "maximumRFQAttachments",
+    "category": "rfq",
+    "value": 5,
+    "valueType": "number",
+    "description": "Global RFQ attachment cap.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "RFQExpiryReminderEnabled",
+    "category": "rfq",
+    "value": false,
+    "valueType": "boolean",
+    "description": "Reserved for the owning module; cannot enable unsupported processing.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "maximumMarketRFQResponses",
+    "category": "rfq",
+    "value": 0,
+    "valueType": "number",
+    "description": "Global response cap; zero disables this cap. Subscription entitlements still apply.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "integratedLogisticsEnabled",
+    "category": "delivery",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Allow integrated delivery for new selections.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "sellerArrangedLogisticsEnabled",
+    "category": "delivery",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Allow seller-arranged delivery for new selections.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "buyerArrangedLogisticsEnabled",
+    "category": "delivery",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Allow buyer-arranged delivery for new selections.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "manualRefundRequiresApproval",
+    "category": "refund",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Mandatory approval cannot be bypassed.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "refundNotificationEnabled",
+    "category": "refund",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Deliver refund notifications; does not disable durable audit history.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "automaticRefundEnabled",
+    "category": "refund",
+    "value": false,
+    "valueType": "boolean",
+    "description": "Reserved for the owning module; cannot enable unsupported processing.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "maximumAutomaticRefundAmount",
+    "category": "refund",
+    "value": {},
+    "valueType": "object",
+    "description": "Reserved for the owning module; cannot enable unsupported processing.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "defaultFreePlanId",
+    "category": "subscription",
+    "value": null,
+    "valueType": "object",
+    "description": "Optional active free plan for future default subscription selection.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "subscriptionExpiryReminderDays",
+    "category": "subscription",
+    "value": [
+      7,
+      1
+    ],
+    "valueType": "array",
+    "description": "Reserved until a subscription reminder worker consumes this policy.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "settlementHoldDays",
+    "category": "settlement",
+    "value": 2,
+    "valueType": "number",
+    "description": "Future Module 25 eligibility calculations; never rewrites stored eligibleAt.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "automaticSettlementEnabled",
+    "category": "settlement",
+    "value": false,
+    "valueType": "boolean",
+    "description": "Reserved for the owning module; cannot enable unsupported processing.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "settlementProcessingEnabled",
+    "category": "settlement",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Module 25 master switch for initiating new payouts; does not reverse history.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "settlementRequiresVerifiedSeller",
+    "category": "settlement",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Core seller verification safety requirement.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "settlementRequiresVerifiedPayoutAccount",
+    "category": "payout",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Core payout-account verification safety requirement.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "minimumPayoutAmounts",
+    "category": "payout",
+    "value": {},
+    "valueType": "object",
+    "description": "Optional currency-specific minimums for Module 25; empty disables thresholds.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "maximumAutomaticPayoutAmount",
+    "category": "payout",
+    "value": {},
+    "valueType": "object",
+    "description": "Currency-specific Module 25 automatic payout limits; no automatic workflow is enabled.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "payoutApprovalMode",
+    "category": "payout",
+    "value": "maker_checker",
+    "valueType": "string",
+    "description": "Preserve separation of duties until Module 25 implements approval policies.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "payoutRetryEnabled",
+    "category": "payout",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Module 25 retry policy; never authorizes duplicate transfers.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "manualPayoutRequiresApproval",
+    "category": "payout",
+    "value": true,
+    "valueType": "boolean",
+    "description": "Mandatory financial approval.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "settlementProcessingDays",
+    "category": "settlement",
+    "value": [],
+    "valueType": "array",
+    "description": "Scheduling is reserved until Module 25 implements a timezone-aware worker.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "maxImageSizeMb",
+    "category": "file_upload",
+    "value": 5,
+    "valueType": "number",
+    "description": "Image upload ceiling; module and subscription limits still apply.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "maxDocumentSizeMb",
+    "category": "file_upload",
+    "value": 20,
+    "valueType": "number",
+    "description": "Document upload ceiling; module-specific limits still apply.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "allowedImageTypes",
+    "category": "file_upload",
+    "value": [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ],
+    "valueType": "array",
+    "description": "Safe image MIME types.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "allowedDocumentTypes",
+    "category": "file_upload",
+    "value": [
+      "application/pdf"
+    ],
+    "valueType": "array",
+    "description": "Safe document MIME types.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "maximumFilesPerUpload",
+    "category": "file_upload",
+    "value": 1,
+    "valueType": "number",
+    "description": "The upload API accepts one file per request.",
+    "isPublic": false,
+    "isEditable": false
+  },
+  {
+    "key": "userOtpExpiryMinutes",
+    "category": "security",
+    "value": 10,
+    "valueType": "number",
+    "description": "Expiry for newly issued user verification OTPs.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "passwordResetOtpExpiryMinutes",
+    "category": "security",
+    "value": 10,
+    "valueType": "number",
+    "description": "Expiry for newly issued password reset OTPs.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "adminOtpExpiryMinutes",
+    "category": "security",
+    "value": 10,
+    "valueType": "number",
+    "description": "Expiry for newly issued admin password reset OTPs.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "maxLoginAttempts",
+    "category": "security",
+    "value": 5,
+    "valueType": "number",
+    "description": "Maximum user/admin login attempts before lockout.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "loginLockMinutes",
+    "category": "security",
+    "value": 15,
+    "valueType": "number",
+    "description": "Duration of newly imposed login lockouts.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "adminSetupTokenExpiryHours",
+    "category": "security",
+    "value": 24,
+    "valueType": "number",
+    "description": "Lifetime of new admin invitations.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "auditLogRetentionDays",
+    "category": "audit",
+    "value": 0,
+    "valueType": "number",
+    "description": "Archive eligibility policy; zero retains indefinitely. No automatic audit deletion.",
+    "isPublic": false,
+    "isEditable": true
+  },
+  {
+    "key": "auditExportExpiryMinutes",
+    "category": "audit",
+    "value": 1440,
+    "valueType": "number",
+    "description": "Lifetime of newly requested audit exports.",
+    "isPublic": false,
+    "isEditable": true
+  }
+]

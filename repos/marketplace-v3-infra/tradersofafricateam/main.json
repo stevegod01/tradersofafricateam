@@ -1,0 +1,688 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.41.2.15936",
+      "templateHash": "17781034678613280279"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "westus2",
+      "metadata": {
+        "description": "Location for all new resources"
+      }
+    },
+    "keyVaultName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Azure Key Vault name containing the MySQL admin password"
+      }
+    },
+    "keyVaultSecretName": {
+      "type": "string",
+      "defaultValue": "mysql-admin-password",
+      "metadata": {
+        "description": "Key Vault secret name for MySQL admin password"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "tofa-vnet",
+      "metadata": {
+        "description": "Existing VNet name"
+      }
+    },
+    "dbSubnetName": {
+      "type": "string",
+      "defaultValue": "tofa-db-subnet",
+      "metadata": {
+        "description": "Existing or target DB subnet name"
+      }
+    },
+    "appSubnetName": {
+      "type": "string",
+      "defaultValue": "tofa-app-subnet",
+      "metadata": {
+        "description": "Existing or target App subnet name"
+      }
+    },
+    "bastionSubnetName": {
+      "type": "string",
+      "defaultValue": "AzureBastionSubnet",
+      "metadata": {
+        "description": "Azure Bastion requires this exact subnet name"
+      }
+    },
+    "dbSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.10.2.0/24",
+      "metadata": {
+        "description": "Address prefix for DB subnet"
+      }
+    },
+    "appSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.10.3.0/24",
+      "metadata": {
+        "description": "Address prefix for App subnet"
+      }
+    },
+    "bastionSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.10.1.0/26",
+      "metadata": {
+        "description": "Address prefix for Bastion subnet. Bastion requires /26 or larger subnet."
+      }
+    },
+    "mysqlServerName": {
+      "type": "string",
+      "defaultValue": "tofa-marketplace-db-dev",
+      "metadata": {
+        "description": "MySQL Flexible Server name"
+      }
+    },
+    "administratorLogin": {
+      "type": "string",
+      "defaultValue": "tofa_admin",
+      "metadata": {
+        "description": "MySQL admin username"
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "MySQL admin password (retrieved from Key Vault at deployment time)"
+      }
+    },
+    "privateDnsZoneName": {
+      "type": "string",
+      "defaultValue": "tofa-marketplace-db-dev.private.mysql.database.azure.com",
+      "metadata": {
+        "description": "Private DNS zone name as requested"
+      }
+    },
+    "databaseName": {
+      "type": "string",
+      "defaultValue": "tofa_marketplace_II",
+      "metadata": {
+        "description": "Database name to create"
+      }
+    },
+    "jumpboxVmName": {
+      "type": "string",
+      "defaultValue": "tofa-jumpbox",
+      "metadata": {
+        "description": "Jump box VM name"
+      }
+    },
+    "jumpboxAdminUsername": {
+      "type": "string",
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "Jump box admin username"
+      }
+    },
+    "jumpboxSshPublicKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SSH public key for jump box VM (leave empty to generate)"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to all resources"
+      }
+    }
+  },
+  "variables": {
+    "mysqlVersion": "8.0.21",
+    "mysqlSkuName": "Standard_B1s",
+    "mysqlTier": "Burstable",
+    "mysqlStorageSizeGb": 20,
+    "mysqlBackupRetentionDays": 7,
+    "mysqlGeoRedundantBackup": "Disabled",
+    "mysqlHighAvailabilityMode": "Disabled"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2023-07-01",
+      "name": "[parameters('keyVaultName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "enableRbacAuthorization": true,
+        "enableSoftDelete": true,
+        "enabledForDeployment": true,
+        "enabledForTemplateDeployment": true
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-07-01",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), parameters('keyVaultSecretName'))]",
+      "properties": {
+        "value": "[parameters('administratorLoginPassword')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2023-11-01",
+      "name": "[parameters('vnetName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.10.0.0/16"
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-11-01",
+      "name": "[format('{0}/{1}', parameters('vnetName'), parameters('bastionSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('bastionSubnetPrefix')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-bastion-nsg')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-bastion-nsg')]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-11-01",
+      "name": "[format('{0}/{1}', parameters('vnetName'), parameters('dbSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('dbSubnetPrefix')]",
+        "delegations": [
+          {
+            "name": "mysql-flexible-servers-delegation",
+            "properties": {
+              "serviceName": "Microsoft.DBforMySQL/flexibleServers"
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-db-nsg')]"
+        },
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateLinkServiceNetworkPolicies": "Enabled"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-db-nsg')]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2023-11-01",
+      "name": "[format('{0}/{1}', parameters('vnetName'), parameters('appSubnetName'))]",
+      "properties": {
+        "addressPrefix": "[parameters('appSubnetPrefix')]",
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-app-nsg')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'tofa-app-nsg')]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-11-01",
+      "name": "tofa-bastion-nsg",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowHttpsInbound",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "AllowGatewayManagerInbound",
+            "properties": {
+              "priority": 110,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "GatewayManager",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "AllowLoadBalancerInbound",
+            "properties": {
+              "priority": 120,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "AzureLoadBalancer",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "AllowBastionHostCommunication",
+            "properties": {
+              "priority": 130,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRanges": [
+                "8080",
+                "5701"
+              ],
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork"
+            }
+          },
+          {
+            "name": "DenyAllInbound",
+            "properties": {
+              "priority": 4096,
+              "access": "Deny",
+              "direction": "Inbound",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "AllowSshRdpOutbound",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Outbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRanges": [
+                "22",
+                "3389"
+              ],
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "VirtualNetwork"
+            }
+          },
+          {
+            "name": "AllowAzureCloudOutbound",
+            "properties": {
+              "priority": 110,
+              "access": "Allow",
+              "direction": "Outbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "AzureCloud"
+            }
+          },
+          {
+            "name": "AllowBastionCommunication",
+            "properties": {
+              "priority": 120,
+              "access": "Allow",
+              "direction": "Outbound",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRanges": [
+                "8080",
+                "5701"
+              ],
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "VirtualNetwork"
+            }
+          },
+          {
+            "name": "AllowGetSessionInformation",
+            "properties": {
+              "priority": 130,
+              "access": "Allow",
+              "direction": "Outbound",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "Internet"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-11-01",
+      "name": "tofa-db-nsg",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowMySqlFromAppSubnet",
+            "properties": {
+              "priority": 100,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3306",
+              "sourceAddressPrefix": "[parameters('appSubnetPrefix')]",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "DenyAllInbound",
+            "properties": {
+              "priority": 4096,
+              "access": "Deny",
+              "direction": "Inbound",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2023-11-01",
+      "name": "tofa-app-nsg",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/privateDnsZones",
+      "apiVersion": "2024-06-01",
+      "name": "[parameters('privateDnsZoneName')]",
+      "location": "global",
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2024-06-01",
+      "name": "[format('{0}/{1}', parameters('privateDnsZoneName'), format('{0}-link', parameters('vnetName')))]",
+      "location": "global",
+      "properties": {
+        "registrationEnabled": false,
+        "virtualNetwork": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2023-11-01",
+      "name": "tofa-bastion-pip",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/bastionHosts",
+      "apiVersion": "2025-05-01",
+      "name": "tofa-bastion",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "Basic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "bastion-ipconfig",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('bastionSubnetName'))]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'tofa-bastion-pip')]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'tofa-bastion-pip')]",
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('bastionSubnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforMySQL/flexibleServers",
+      "apiVersion": "2024-12-30",
+      "name": "[parameters('mysqlServerName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "[variables('mysqlSkuName')]",
+        "tier": "[variables('mysqlTier')]"
+      },
+      "properties": {
+        "version": "[variables('mysqlVersion')]",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "storage": {
+          "storageSizeGB": "[variables('mysqlStorageSizeGb')]",
+          "autoGrow": "Enabled"
+        },
+        "backup": {
+          "backupRetentionDays": "[variables('mysqlBackupRetentionDays')]",
+          "geoRedundantBackup": "[variables('mysqlGeoRedundantBackup')]"
+        },
+        "highAvailability": {
+          "mode": "[variables('mysqlHighAvailabilityMode')]"
+        },
+        "network": {
+          "delegatedSubnetResourceId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('dbSubnetName'))]",
+          "privateDnsZoneResourceId": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]",
+          "publicNetworkAccess": "Disabled"
+        },
+        "maintenancePolicy": {
+          "patchStrategy": "Regular"
+        },
+        "createMode": "Default"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('dbSubnetName'))]",
+        "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]",
+        "[resourceId('Microsoft.Network/privateDnsZones/virtualNetworkLinks', parameters('privateDnsZoneName'), format('{0}-link', parameters('vnetName')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforMySQL/flexibleServers/configurations",
+      "apiVersion": "2024-12-30",
+      "name": "[format('{0}/{1}', parameters('mysqlServerName'), 'require_secure_transport')]",
+      "properties": {
+        "value": "ON",
+        "source": "user-override"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforMySQL/flexibleServers', parameters('mysqlServerName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforMySQL/flexibleServers/configurations",
+      "apiVersion": "2024-12-30",
+      "name": "[format('{0}/{1}', parameters('mysqlServerName'), 'tls_version')]",
+      "properties": {
+        "value": "TLSv1.2,TLSv1.3",
+        "source": "user-override"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforMySQL/flexibleServers', parameters('mysqlServerName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DBforMySQL/flexibleServers/databases",
+      "apiVersion": "2024-12-30",
+      "name": "[format('{0}/{1}', parameters('mysqlServerName'), parameters('databaseName'))]",
+      "properties": {
+        "charset": "utf8mb4",
+        "collation": "utf8mb4_unicode_ci"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforMySQL/flexibleServers', parameters('mysqlServerName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-11-01",
+      "name": "[format('{0}-nic', parameters('jumpboxVmName'))]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('appSubnetName'))]"
+              },
+              "privateIPAllocationMethod": "Dynamic"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('appSubnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2024-03-01",
+      "name": "[parameters('jumpboxVmName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B1s"
+        },
+        "osProfile": {
+          "computerName": "[parameters('jumpboxVmName')]",
+          "adminUsername": "[parameters('jumpboxAdminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[format('/home/{0}/.ssh/authorized_keys', parameters('jumpboxAdminUsername'))]",
+                  "keyData": "[parameters('jumpboxSshPublicKey')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "0001-com-ubuntu-server-jammy",
+            "sku": "22_04-lts-gen2",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Standard_LRS"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('jumpboxVmName')))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('jumpboxVmName')))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "mysqlServerResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.DBforMySQL/flexibleServers', parameters('mysqlServerName'))]"
+    },
+    "mysqlServerFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.DBforMySQL/flexibleServers', parameters('mysqlServerName')), '2024-12-30').fullyQualifiedDomainName]"
+    },
+    "databaseNameOut": {
+      "type": "string",
+      "value": "[parameters('databaseName')]"
+    },
+    "bastionName": {
+      "type": "string",
+      "value": "tofa-bastion"
+    },
+    "privateDnsZoneId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/privateDnsZones', parameters('privateDnsZoneName'))]"
+    },
+    "keyVaultId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+    },
+    "keyVaultSecretUri": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVaultName'), parameters('keyVaultSecretName')), '2023-07-01').secretUriWithVersion]"
+    },
+    "jumpboxVmName": {
+      "type": "string",
+      "value": "[parameters('jumpboxVmName')]"
+    },
+    "jumpboxVmPrivateIp": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('jumpboxVmName'))), '2023-11-01').ipConfigurations[0].properties.privateIPAddress]"
+    }
+  }
+}

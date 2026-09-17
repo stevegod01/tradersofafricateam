@@ -1,0 +1,20 @@
+# Non-secret configuration for the VNet-connected development release runner.
+# Install as /etc/tofa/app-service-deployment.conf, owned by root with mode 0600.
+NODE_ENV=production
+AZURE_SUBSCRIPTION_ID=a2bf1d66-e5a6-42fe-ae78-eb0c64c31dbb
+AZURE_RESOURCE_GROUP=tofadotcom-dev-rg
+AZURE_APP_SERVICE_NAME=tofa-marketplace-api-dev-sn2m6a6fkrfyw
+HEALTH_URL=https://dev.tradersofafrica.com/api/health
+
+DB_HOST=tofa-marketplace-db-dev.mysql.database.azure.com
+DB_PORT=3306
+DB_NAME=tofa_marketplace_II
+DB_SSL=true
+DB_ADMIN_USERNAME=tofa_admin
+KEY_VAULT_NAME=tofa-dev-kv
+
+# Secret names only. Values remain in Key Vault and are resolved by the
+# release command through the jumpbox managed identity.
+# KV_MIGRATION_USERNAME_SECRET=migration-username
+# KV_MIGRATION_PASSWORD_SECRET=migration-password
+# KV_DB_ADMIN_PASSWORD_SECRET=mysql-admin-password
