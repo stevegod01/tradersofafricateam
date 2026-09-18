@@ -1,0 +1,85 @@
+name: Snapshot validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: snapshot-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend checks without live services
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: repos/marketplace-v3-be
+    env:
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20.19.5
+          cache: npm
+          cache-dependency-path: repos/marketplace-v3-be/package-lock.json
+      - name: Use the declared npm version
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          package_manager="$(node -p "require('./package.json').packageManager")"
+          [[ $package_manager =~ ^npm@[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 78
+          npm install --global "$package_manager" --ignore-scripts --no-audit --no-fund
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --engine-strict --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build and test API contracts
+        run: npm test
+      - name: Test isolated marketplace policies and routes
+        run: >-
+          node --test
+          tests/after-sales.test.cjs
+          tests/audit-log.test.cjs
+          tests/system-settings.test.cjs
+          tests/rewards.test.cjs
+          tests/saved-products.test.cjs
+          tests/settlement.test.cjs
+
+  frontend:
+    name: Frontend lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: repos/marketplace-v3-fe
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:5000/api
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20.19.5
+          cache: npm
+          cache-dependency-path: repos/marketplace-v3-fe/package-lock.json
+      - name: Use npm 11.13.0
+        run: npm install --global npm@11.13.0 --ignore-scripts --no-audit --no-fund
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --engine-strict --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build

@@ -1,6 +1,6 @@
 # Source snapshot
 
-This private repository consolidates the local project source into one checkout. Component Git histories remain in the original repositories; this repository starts with a combined source snapshot.
+This public repository consolidates the local project source into one checkout, as requested by the repository owner. Component Git histories remain in the original repositories; this repository starts with a combined source snapshot. Public visibility does not change original authorship, ownership, or license terms.
 
 | Component | Original repository | Local source commit |
 | --- | --- | --- |
@@ -16,4 +16,4 @@ The original infrastructure checkout reports a local change to its root `main.bi
 
 The backend's cached `origin/master` was eight commits ahead of its checked-out source. Those remote-only changes are not silently substituted into this local snapshot.
 
-Dependency trees, generated builds, local credentials, caches, old release archives, and alternate legacy/integration working copies are excluded. Backend workflows are preserved in their component directory and do not automatically run from the combined repository root.
+Dependency trees, generated builds, local credentials, caches, old release archives, and alternate legacy/integration working copies are excluded. Backend workflows are preserved in their component directory and do not automatically run from the combined repository root. A separate root validation workflow now checks the snapshot without running those component deployment workflows.

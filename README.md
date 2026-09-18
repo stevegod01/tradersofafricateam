@@ -1,6 +1,6 @@
 # Traders of Africa Marketplace
 
-Traders of Africa (TOFA) is a marketplace project connecting African suppliers with buyers. This repository brings together the web frontend, backend API, and Azure infrastructure source in one private project.
+Traders of Africa (TOFA) is a marketplace project connecting African suppliers with buyers. This public repository brings together a source snapshot of the web frontend, backend API, and Azure infrastructure. It preserves the original component attribution and does not imply sole authorship or a new open-source license.
 
 ## Project layout
 
@@ -89,11 +89,20 @@ Run these from the indicated component directory:
 
 The backend also includes audit-log, settings, and MySQL integration suites; see its README and `package.json`. The frontend does not currently define an automated test suite.
 
+## Continuous integration
+
+[Snapshot validation](.github/workflows/validate.yml) runs from the repository root on pushes and pull requests. Commands and npm caches point to each component's own directory and lockfile. Both jobs use Node.js `20.19.5`; the backend uses its declared npm `11.13.0`.
+
+- Backend: TypeScript, ESLint, the default API/Swagger tests, and six additional suites covering after-sales, audit logs, settings, rewards, saved products, and settlements.
+- Frontend: ESLint and a Next.js production build. The build downloads its configured Google Fonts, so it requires internet access.
+
+These checks require no cloud credentials or running database. They do not run migrations, MySQL integration tests, deployment scripts, or live payment, email, storage, and logistics integrations. Passing them does not establish production readiness or complete storefront behavior.
+
 ## Deployment
 
 Read the component documentation before deploying. Azure resources, runtime secrets, database migrations, identity permissions, and frontend build-time settings require environment-specific configuration.
 
-Backend GitHub Actions files remain under `repos/marketplace-v3-be/.github/workflows/` as source from the component repository. GitHub does not run workflows from that nested directory. They must be adapted to this combined repository's paths, permissions, secrets, and branch rules before enabling CI or deployment here.
+Backend GitHub Actions files remain under `repos/marketplace-v3-be/.github/workflows/` as source from the component repository. GitHub does not run workflows from that nested directory. The root workflow above enables validation only; deployment remains inactive and requires a separate review of paths, permissions, secrets, infrastructure, and branch rules before it can be enabled here.
 
 The infrastructure repository includes both root templates and a nested `tradersofafricateam/` variant. They have different load-balancer settings. The checked-in ARM JSON is a legacy template; consult the infrastructure README before choosing a deployment entrypoint.
 

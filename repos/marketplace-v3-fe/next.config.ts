@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // This component owns its dependencies; ignore lockfiles above the snapshot.
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {
